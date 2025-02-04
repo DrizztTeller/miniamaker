@@ -24,6 +24,9 @@ class Subscription
     #[ORM\Column]
     private ?bool $is_active = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $amount = null;
+
     #[ORM\Column(length: 80)]
     private ?string $frequency = null;
 
@@ -38,9 +41,6 @@ class Subscription
      */
     #[ORM\OneToMany(targetEntity: Promo::class, mappedBy: 'subscription')]
     private Collection $promos;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $amount = null;
 
     public function __construct()
     {
@@ -86,6 +86,18 @@ class Subscription
     public function setIsActive(bool $is_active): static
     {
         $this->is_active = $is_active;
+
+        return $this;
+    }
+
+    public function getAmount(): ?string
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(string $amount): static
+    {
+        $this->amount = $amount;
 
         return $this;
     }
@@ -156,15 +168,4 @@ class Subscription
         return $this;
     }
 
-    public function getAmount(): ?string
-    {
-        return $this->amount;
-    }
-
-    public function setAmount(string $amount): static
-    {
-        $this->amount = $amount;
-
-        return $this;
-    }
 }
