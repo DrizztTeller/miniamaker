@@ -30,6 +30,11 @@ class Promo
     #[ORM\Column]
     private ?\DateTimeImmutable $updated_at = null;
 
+    public function __construct() {
+        $this->name = 'MINI' . (new \DateTime())->format('m');
+        $this->percent = 0;
+    }
+
     #[ORM\PrePersist]
     public function setCreatedAtValue()
     {

@@ -46,6 +46,8 @@ class Subscription
     {
         $this->promos = new ArrayCollection();
         $this->is_active = false;
+        $this->amount = 99.97;
+        $this->frequency = 'monthly';
     }
 
     #[ORM\PrePersist]
