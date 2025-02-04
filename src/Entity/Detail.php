@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DetailRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -56,6 +58,12 @@ class Detail
     private ?\DateTimeImmutable $updated_at = null;
 
     /**
+     * @var Collection<int, LandingPage>
+     */
+    #[ORM\OneToMany(targetEntity: LandingPage::class, mappedBy: 'detail')]
+    private Collection $landingPages;
+
+    /**
      * Constructeur pour gérer les attributs non nullables par défaut
      */
     public function __construct()
@@ -64,6 +72,7 @@ class Detail
         $this->portfolio_checked = false;
         $this->strikes = 0;
         $this->is_banned = false;
+        $this->landingPages = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -256,5 +265,35 @@ class Detail
     public function __tostring()
     {
         return $this->company_name;
+    }
+
+    /**
+     * @return Collection<int, LandingPage>
+     */
+    public function getLandingPages(): Collection
+    {
+        return $this->landingPages;
+    }
+
+    public function addLandingPage(LandingPage $landingPage): static
+    {
+        if (!$this->landingPages->contains($landingPage)) {
+            $this->landingPages->add($landingPage);
+            $landingPage->setDetail($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLandingPage(LandingPage $landingPage): static
+    {
+        if ($this->landingPages->removeElement($landingPage)) {
+            // set the owning side to null (unless already changed)
+            if ($landingPage->getDetail() === $this) {
+                $landingPage->setDetail(null);
+            }
+        }
+
+        return $this;
     }
 }
