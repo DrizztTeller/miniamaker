@@ -1,3 +1,12 @@
 body {
-    background-color: skyblue;
+    font-family: "Inter Tight", sans-serif;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Poppins", sans-serif;
+}
+
+.logo {
+    font-family: "Lexend Mega", sans-serif;
 }
