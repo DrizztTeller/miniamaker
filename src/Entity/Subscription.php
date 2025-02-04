@@ -24,7 +24,7 @@ class Subscription
     #[ORM\Column]
     private ?bool $is_active = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 7, scale: 2)]
     private ?string $amount = null;
 
     #[ORM\Column(length: 80)]
