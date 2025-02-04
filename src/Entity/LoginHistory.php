@@ -32,6 +32,11 @@ class LoginHistory
     #[ORM\Column(length: 255)]
     private ?string $browser = null;
 
+    public function __construct()
+    {
+        $this->login_date = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
