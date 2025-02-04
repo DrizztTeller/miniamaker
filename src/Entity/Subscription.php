@@ -45,6 +45,7 @@ class Subscription
     public function __construct()
     {
         $this->promos = new ArrayCollection();
+        $this->is_active = false;
     }
 
     #[ORM\PrePersist]
