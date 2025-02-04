@@ -21,15 +21,15 @@
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <label for="username">Email</label>
         <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-        {# <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required> #}
+        <label for="password">Password</label>
+        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
         {# Plus besoin de password car maintenant on envoie un mail avec le lien de co Sinon si on veux les 2 possibilités : 2 forms, un caché par js, et on affiche que celui qu'on veut selon un btn #}
         <input type="hidden" name="_csrf_token"
                value="{{ csrf_token('authenticate') }}"
         >
 
         <button class="btn btn-lg btn-primary" type="submit">
-            Envoyer un lien de connexion
+            Se connecter
         </button>
     </form>
 {% endblock %}
