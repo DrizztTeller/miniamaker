@@ -36,6 +36,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\ManyToOne(inversedBy: 'clients')]
+    private ?Subscription $subscription = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
@@ -62,9 +65,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isVerified = false;
-
-    #[ORM\OneToOne(mappedBy: 'pro', cascade: ['persist', 'remove'])]
-    private ?Subscription $subscription = null;
 
     /**
      * Constructeur pour gérer les attributs non nullables par défaut
@@ -161,6 +161,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(?Subscription $subscription): static
+    {
+        $this->subscription = $subscription;
+
+        return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
@@ -272,23 +284,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
-
-        return $this;
-    }
-
-    public function getSubscription(): ?Subscription
-    {
-        return $this->subscription;
-    }
-
-    public function setSubscription(Subscription $subscription): static
-    {
-        // set the owning side of the relation if necessary
-        if ($subscription->getPro() !== $this) {
-            $subscription->setPro($this);
-        }
-
-        $this->subscription = $subscription;
 
         return $this;
     }
