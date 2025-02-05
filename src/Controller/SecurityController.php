@@ -6,7 +6,6 @@ use App\Entity\LoginHistory;
 use Symfony\Component\Mime\Email;
 use App\Repository\UserRepository;
 use DeviceDetector\DeviceDetector;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,29 +17,10 @@ use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 class SecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_login', methods: ['GET', 'POST'])]
-    public function login(AuthenticationUtils $authenticationUtils, Request $request, EntityManagerInterface $em): Response
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
-
-        // dd($request->headers->get('User-Agent'));
-        $userAgent = $request->headers->get('User-Agent');
-
-        $deviceDetector = new DeviceDetector($userAgent);
-        $deviceDetector->parse();  //parser = regarder dedans
-
-
         //Si déjà co, redirection vers page profile
         if ($this->getUser()) {
-            $loginHistory = new LoginHistory();
-            $loginHistory->setUser($this->getUser())
-                ->setIpAddress($request->getClientIp())
-                ->setDevice($deviceDetector->getDeviceName())
-                ->setOs($deviceDetector->getOs()['name'])
-                ->setBrowser($deviceDetector->getClient()['name']);
-            // dd($loginHistory);
-
-            $em->persist($loginHistory);
-            $em->flush();
-
             return $this->redirectToRoute('app_profile');
         }
 
