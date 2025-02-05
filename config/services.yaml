@@ -5,7 +5,12 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     APP_URL: '%env(APP_URL)'
-    
+    OPENAI: '%env(OPENAI)'
+    ELEVENLABS: '%env(ELEVENLABS)'
+    STRIPE_SK: '%env(STRIPE_SK)'
+    STRIPE_PK: '%env(STRIPE_PK)'
+    USERS_IMG_PATH: '%env(USERS_IMG_PATH)'
+
 services:
     # default configuration for services in *this* file
     _defaults:
