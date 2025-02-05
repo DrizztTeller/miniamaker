@@ -74,6 +74,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: LoginHistory::class, mappedBy: 'user')]
     private Collection $loginHistories;
 
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
+
     /**
      * Constructeur pour gérer les attributs non nullables par défaut
      */
@@ -82,6 +85,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->is_terms = false;
         $this->is_gpdr = false;
         $this->loginHistories = new ArrayCollection();
+        $this->image = "default.png";
     }
 
 
@@ -323,6 +327,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $loginHistory->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }
