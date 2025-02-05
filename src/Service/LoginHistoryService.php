@@ -37,7 +37,7 @@ class LoginHistoryService
       ->setOs($deviceDetector->getOs()['name'])
       ->setBrowser($deviceDetector->getClient()['name']);
 
-    $this->em->persist($loginHistory); // transforme en requete SQL 
-    $this->em->flush();
+    $this->em->persist($loginHistory); // prepare la requete SQL pour insérer l'objet 
+    $this->em->flush(); // execute la requete
   }
 }
