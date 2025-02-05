@@ -1,6 +1,9 @@
-<nav class="d-flex justify-content-between align-items-center">
+<nav class="d-flex justify-content-between align-items-center p-3">
   <a class="navbar-brand fs-4 logo" href="{{ path('app_homepage') }}">
       miniamaker
   </a>
-
+  {# ICI C'EST PROPRE AU ROLE #}
+  <h5>Client</h5>
+  {# END #}
+  {% include "components/nav/_partials/login.html.twig" %}
 </nav>
