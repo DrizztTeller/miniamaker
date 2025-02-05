@@ -2,10 +2,6 @@
 {% block title %}Créer un compte{% endblock %} 
 {% block body %}
 <div class="vh-100 center">
-  {% for flash_error in app.flashes('verify_email_error') %}
-  <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-  {% endfor %}
-
   {{ form_errors(registrationForm) }}
 
   <div class="border rounded p-3">
