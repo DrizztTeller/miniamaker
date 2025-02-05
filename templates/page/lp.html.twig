@@ -6,15 +6,6 @@
     {% include 'components/nav/public.html.twig' %}
     <h1>LP SANS LOGIN</h1>
     
-    {% if app.user %}
-        <a href={{ path('app_logout') }}>
-            Déconnexion
-        </a>
 
-        {% else %}
-        <a href={{ path('app_login') }}>
-          Connexion
-      </a>
-    {% endif %}
 
 {% endblock %}
