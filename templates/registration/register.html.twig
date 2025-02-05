@@ -1,23 +1,31 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} {% block title %}Register{% endblock %} {% block
+body %}
+<div class="vh-100 center">
+  {% for flash_error in app.flashes('verify_email_error') %}
+  <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+  {% endfor %}
 
-{% block title %}Register{% endblock %}
+  {{ form_errors(registrationForm) }}
 
-{% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+  <div class="border rounded p-3">
 
-    <h1>Register</h1>
-
-    {{ form_errors(registrationForm) }}
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+      {{ form(registrationForm, {'attr': {'class': 'form'}}) }} 
+      
+    </div>
+      {# {{ form_start(registrationForm) }} #} 
+      {# Rajouter ligne ci-dessous si on ajoute balise btn en dur (ligne 18) #} 
+      {# {{ form_rest(registrationForm) }} #}
+      
+      {# <div class="form-check">
+          {{ form_widget(registrationForm.isGpdr) }}
+          <label class="form-check-label">
+              Acceptez-vous notre politique 
+              <a href="{{ path('app_rgpd') }}" target="_blank">RGPD</a> ?
+            </label>
+            {{ form_errors(registrationForm.isGpdr) }}
+        </div> #}
+        {# <button type="submit" class="btn">Inscription</button> #} 
+        {# btn ici que si on veut y mettre une icone dedans ou si qd on clique on a une pop-up, sinon on le met dans le formType #} 
+        {# {{ form_end(registrationForm) }} #}
+</div>
 {% endblock %}
