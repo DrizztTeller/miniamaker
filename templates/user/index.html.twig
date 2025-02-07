@@ -10,7 +10,7 @@
     <div class="row m-0">
     <header class="col-md-3 text-center bg-white shadow-sm m-0">
         <div class="p-3">
-            <img src={{ asset('medias/images/default.png') }} alt={{ app.user.username }} class="img-fluid rounded-circle" width="120">
+            <img src="/medias/images/users/{{ app.user.image ?? 'default.png' }}" alt={{ app.user.username }} class="img-fluid rounded-circle" width="120">
         </div>
         <hr>
         <div class="text-start">

@@ -2,7 +2,7 @@
 	{% if app.user %}
 		<div class="dropdown">
 			<a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-				<img src="{{ asset('medias/images/default.png') }}" alt="{{ app.user.username ?? '' }}" class="rounded-circle" width="30">
+				<img src="/medias/images/users/{{ app.user.image ?? 'default.png' }}" alt="{{ app.user.username ?? '' }}" class="rounded-circle" width="30">
 				{{ app.user.username ?? '' }}
 			</a>
 
