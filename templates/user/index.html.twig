@@ -1,33 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserController!{% endblock %}
+{% block title %}Mon profil - Réglages {% endblock %}
 
 {% block body %}
 
 {% include 'components/nav.html.twig' %}
 
 <div class="container pt-5">
-    <div class="row">
-    <header class="col-md-3 p-3 text-center bg-white shadow-sm">
-        <img src="{{ asset('medias/images/default.png') }}" alt="{{ app.user.username }}" class="img-fluid rounded-circle" width="120">
-        <hr>
-        <div class="text-start">
-            <p>{{ app.user.username }}</p>
-            <p>{{ app.user.fullname }}</p>
-            <p>{{ app.user.email }}</p>
+    <div class="row m-0">
+    <header class="col-md-3 text-center bg-white shadow-sm m-0">
+        <div class="p-3">
+            <img src={{ asset('medias/images/default.png') }} alt={{ app.user.username }} class="img-fluid rounded-circle" width="120">
         </div>
         <hr>
-        ABONNEMENT<br>
-        MA FICHE<br>
-        MES PAGES<br>
-        MESSAGERIE
-
+        <div class="text-start">
+            <p class="border-bottom pb-3">
+                {{ ux_icon('mdi:account-circle', { class: 'h-1 me-2 text-secondary' }) }}
+                {{ app.user.username }} <span class="ms-2 badge text-bg-secondary">{{ app.user.roles[0]|slice(5) }}</span>
+            </p>
+            <p class="border-bottom pb-3">
+                {{ ux_icon('mdi:card-account-details', { class: 'h-1 me-2 text-secondary' }) }}
+                {{ app.user.fullname }}
+            </p>
+            <p class="border-bottom pb-3">
+                {{ ux_icon('mdi:email', { class: 'h-1 me-2 text-secondary' }) }}
+                {{ app.user.email }}
+            </p>
+            <p class="border-bottom pb-3">
+                <a href="#" class="text-dark text-decoration-none">
+                    {{ ux_icon('mdi:cog', { class: 'h-1 me-2 text-secondary' }) }}
+                    Gérer mon abonnement
+                </a>
+            </p>
+            <p class="border-bottom pb-3">
+                <a href="#" class="text-dark text-decoration-none">
+                    {{ ux_icon('mdi:pencil', { class: 'h-1 me-2 text-secondary' }) }}
+                    Modifier ma page de profil
+                </a>
+            </p>
+            <p class="border-bottom pb-3">
+                <a href="#" class="text-dark text-decoration-none">
+                    {{ ux_icon('mdi:book', { class: 'h-1 me-2 text-secondary' }) }}
+                    Mes pages
+                </a>
+            </p>
+            <p class="border-bottom pb-3">
+                <a href="#" class="text-dark text-decoration-none">
+                    {{ ux_icon('mdi:message-text', { class: 'h-1 me-2 text-secondary' }) }}
+                    Messagerie
+                </a>
+            </p>
+        </div>
     </header>
-    <section class="col-md-9 p-3">
-    <div class="container-md">
-        {{ form(userForm) }}
-    </div>
-
+    <section class="col-md-9 p-3" ark text-decoration-none">
+        <div class="container-md">
+            {{ form(userForm) }}
+        </div>
     </section>
     </div>
 </div>
