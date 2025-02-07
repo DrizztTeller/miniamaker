@@ -29,7 +29,7 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Entrer votre adresse e-mail',
                     'class' => 'form-control',
-                    'required' => false,
+                    // 'required' => false,
                 ],
             ])
             ->add('plainPassword', RepeatedType::class, [
