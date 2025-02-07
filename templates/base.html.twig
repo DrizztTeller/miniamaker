@@ -19,15 +19,14 @@
         {% endblock %}
     </head>
     <body>
-        {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            {{ include('components/_partials/toast.html.twig', {
+                'label': 'warning',
+                'message': message
+            }) }}
         {% endfor %}
-        {% for flash_error in app.flashes('error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-        {% endfor %}
-        {% for flash_error in app.flashes('success') %}
-        <div class="alert alert-success" role="alert">{{ flash_error }}</div>
-        {% endfor %}
-        {% block body %}{% endblock %}
+    {% endfor %}
+    {% block body %}{% endblock %}
     </body>
 </html>
