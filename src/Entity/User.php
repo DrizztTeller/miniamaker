@@ -80,7 +80,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Constructeur pour gérer les attributs non nullables par défaut
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->is_minor = false;
         $this->is_terms = false;
         $this->is_gpdr = false;
@@ -248,7 +249,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isTerms(): ?bool
+    public function isTerms(): bool
     {
         return $this->is_terms;
     }
@@ -260,7 +261,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isGpdr(): ?bool
+    public function isGpdr(): bool
     {
         return $this->is_gpdr;
     }
@@ -331,11 +332,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImage(): string
     {
         return $this->image;
     }
 
+    public function getPathImage(): string
+    {
+        if ($this->image == 'default.png') {
+            return '/medias/images/users/default.png';
+        }
+        return '/medias/images/users/' . $this->image;
+    }
     public function setImage(string $image): static
     {
         $this->image = $image;
@@ -343,7 +351,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isComplete(): bool 
+    public function isComplete(): bool
     {
         if (!empty($this->username) && !empty($this->fullname)) {
             return true;
@@ -351,5 +359,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return false;
     }
-
 }
