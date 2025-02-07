@@ -14,3 +14,13 @@ Sign in :
 Schéma de la BDD : 
 - https://drawsql.app/teams/agiliteach/diagrams/miniamaker
 - https://drawsql.app/teams/drizztteller/diagrams/miniamaker
+
+- symfony new miniamaker --webapp   
+- symfony console make:user    
+- symfony console make:s:f
+- symfony console make:registration-form
+- composer require symfonycasts/verify-email-bundle
+- symfony console messenger:consume async -vv
+- composer require matomo/device-detector
+- composer require symfony/ux-dropzone
+- 
