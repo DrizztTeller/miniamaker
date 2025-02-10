@@ -23,4 +23,9 @@ Schéma de la BDD :
 - symfony console messenger:consume async -vv
 - composer require matomo/device-detector
 - composer require symfony/ux-dropzone
-- 
+- composer require symfony/ux-twig-component
+- composer require symfony/ux-icons
+- composer require nelmio/cors-bundle
+- composer require orm-fixtures --dev
+- composer require fakerphp/faker    
+- sfc make:twig-component
