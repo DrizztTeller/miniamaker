@@ -31,4 +31,4 @@ Schéma de la BDD :
 - sfc make:twig-component
 - sfc d:f:l -n
 - composer require symfony/ux-toggle-password
-- 
+- composer require liip/imagine-bundle   dire yes
