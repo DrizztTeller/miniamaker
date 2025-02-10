@@ -54,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $fullname = null;
 
     #[ORM\Column]
-    private ?bool $is_minor = null;
+    private ?bool $is_major = null;
 
     #[ORM\Column]
     private ?bool $is_terms = null;
@@ -82,7 +82,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function __construct()
     {
-        $this->is_minor = false;
+        $this->is_major = false;
         $this->is_terms = false;
         $this->is_gpdr = false;
         $this->loginHistories = new ArrayCollection();
@@ -237,14 +237,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isMinor(): ?bool
+    public function isMajor(): ?bool
     {
-        return $this->is_minor;
+        return $this->is_major;
     }
 
-    public function setIsMinor(bool $is_minor): static
+    public function setIsMajor(bool $is_major): static
     {
-        $this->is_minor = $is_minor;
+        $this->is_major = $is_major;
 
         return $this;
     }
