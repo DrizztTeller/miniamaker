@@ -48,6 +48,10 @@ h1, h2, h3, h4, h5, h6 {
     color: #555;
 }
 
+.card {
+    border: 0;
+}
+
 .text-xl { font-size: 3rem; }
 .text-2xl { font-size: 3.5rem; }
 .text-3xl { font-size: 4rem; }
@@ -196,12 +200,4 @@ ul { list-style: none; }
     100% {
         transform: translateX(-50%);
     }
-}
-
-.top-5 {
-    top: 5rem;;
-} 
-.right-2 {
-    right: 2rem;
-    left: unset;
 }
