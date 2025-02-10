@@ -29,3 +29,6 @@ Schéma de la BDD :
 - composer require orm-fixtures --dev
 - composer require fakerphp/faker    
 - sfc make:twig-component
+- sfc d:f:l -n
+- composer require symfony/ux-toggle-password
+- 
