@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DetailController!{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="fs-4 text-center mt-5">Remplissez votre fiche d'informations</h1>
+    <div class="container-sm mx-auto">
+        <div class="card p-3">
+            {{ form(detailForm) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
