@@ -5,8 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use App\Entity\Detail;
 use App\Entity\Tag;
-use App\Entity\Subscription;
-use App\Entity\Promo;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -15,10 +14,15 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class AppFixtures extends Fixture
 {
     private $passwordHasher;
+    private $slugger;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    public function __construct(
+        UserPasswordHasherInterface $passwordHasher,
+        SluggerInterface $slugger
+        )
     {
         $this->passwordHasher = $passwordHasher;
+        $this->slugger = $slugger;
     }
 
     public function load(ObjectManager $manager): void
@@ -37,12 +41,17 @@ class AppFixtures extends Fixture
 
         // Création des utilisateurs
         for ($i = 0; $i < 40; $i++) {
+            $nom = $faker->name();
+            $prenom = $faker->firstName();
+            $fullname = $prenom . ' ' . $nom;
+            $sluggy = strtolower($this->slugger->slug($fullname)) . $i;
+
             $user = new User();
-            $user->setEmail($faker->email());
-            $user->setRoles(['ROLE_CLIENT']);
+            $user->setEmail($sluggy . $faker->freeEmailDomain());
+            $user->setRoles(['ROLE_AGENT']);
             $user->setPassword($this->passwordHasher->hashPassword($user, 'password123'));
-            $user->setUsername($faker->userName());
-            $user->setFullname($faker->name());
+            $user->setUsername($this->slugger->slug($prenom));
+            $user->setFullname($fullname);
             $user->setIsMajor(false);
             $user->setIsTerms(true);
             $user->setIsGpdr(true);
@@ -53,12 +62,17 @@ class AppFixtures extends Fixture
 
         // Création des utilisateurs PRO
         for ($i = 0; $i < 50; $i++) {
+            $nom = $faker->name();
+            $prenom = $faker->firstName();
+            $fullname = $prenom . ' ' . $nom;
+            $sluggy = strtolower($this->slugger->slug($fullname)) . $i;
+
             $user = new User();
-            $user->setEmail($faker->email());
-            $user->setRoles(['ROLE_PRO']);
+            $user->setEmail($sluggy . $faker->freeEmailDomain());
+            $user->setRoles(['ROLE_AGENT']);
             $user->setPassword($this->passwordHasher->hashPassword($user, 'password123'));
-            $user->setUsername($faker->userName());
-            $user->setFullname($faker->name());
+            $user->setUsername($this->slugger->slug($prenom));
+            $user->setFullname($fullname);
             $user->setIsMajor(false);
             $user->setIsTerms(true);
             $user->setIsGpdr(true);
@@ -83,12 +97,18 @@ class AppFixtures extends Fixture
         
         // Création des utilisateurs AGENT
         for ($i = 0; $i < 25; $i++) {
+
+            $nom = $faker->name();
+            $prenom = $faker->firstName();
+            $fullname = $prenom . ' ' . $nom;
+            $sluggy = strtolower($this->slugger->slug($fullname));
+
             $user = new User();
-            $user->setEmail($faker->email());
+            $user->setEmail($sluggy . '@' . $faker->freeEmailDomain());
             $user->setRoles(['ROLE_AGENT']);
             $user->setPassword($this->passwordHasher->hashPassword($user, 'password123'));
-            $user->setUsername($faker->userName());
-            $user->setFullname($faker->name());
+            $user->setUsername($this->slugger->slug($prenom));
+            $user->setFullname($fullname);
             $user->setIsMajor(false);
             $user->setIsTerms(true);
             $user->setIsGpdr(true);
