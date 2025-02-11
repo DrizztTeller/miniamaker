@@ -48,8 +48,22 @@ h1, h2, h3, h4, h5, h6 {
     color: #555;
 }
 
+/* Components */
 .card {
     border: 0;
+}
+
+.add {
+    width: 100%;
+    display: grid;
+    place-items: center;
+    padding: 1rem 2rem;
+    /* margin: .5rem; */
+    font-size: .85rem;
+    color: #808080;
+    text-decoration: none;
+    background-color: #efefef;
+    border: 2px dashed #cccccc;
 }
 
 .text-xl { font-size: 3rem; }
