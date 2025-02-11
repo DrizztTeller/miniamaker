@@ -11,7 +11,7 @@
     <div class="row m-0">
         <header class="col-md-3 text-center m-0">
             <div class="p-3">
-                <img src={{ app.user.pathImage }} alt={{ app.user.username }} class="img-fluid rounded-circle" width="120">
+                <img src={{ app.user.pathImage|imagine_filter('square') }} alt={{ app.user.username }} class="img-fluid rounded-circle" width="120">
             </div>
             <div class="card shadow p-3 text-start">
                 <p class="border-bottom pb-3">
