@@ -1,10 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DetailController!{% endblock %}
+{% block title %}Configurer votre fiche d'informations {% endblock %}
 
 {% block body %}
 <div class="container">
     <h1 class="fs-4 text-center mt-5">Remplissez votre fiche d'informations</h1>
+    <div class="text-center mb-3">
+        <a href="{{ path('app_profile') }}" class="btn btn-outlined-primary ">
+            {{ ux_icon('mdi:arrow-left', { class: 'h-1 me-2 text-secondary' }) }}
+            Retour à mon profil
+        </a>
+    </div>
     <div class="container-sm mx-auto">
         <div class="card p-3">
             {{ form(detailForm) }}
