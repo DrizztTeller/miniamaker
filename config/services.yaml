@@ -4,11 +4,11 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    APP_URL: '%env(APP_URL)'
-    OPENAI: '%env(OPENAI)'
-    ELEVENLABS: '%env(ELEVENLABS)'
-    STRIPE_SK: '%env(STRIPE_SK)'
-    STRIPE_PK: '%env(STRIPE_PK)'
+    APP_URL: '%env(APP_URL)%'
+    OPENAI: '%env(OPENAI)%'
+    ELEVENLABS: '%env(ELEVENLABS)%'
+    STRIPE_SK: '%env(STRIPE_SK)%'
+    STRIPE_PK: '%env(STRIPE_PK)%'
     upload_users_images: '%kernel.project_dir%/public/medias/images/users'
 
 services:
