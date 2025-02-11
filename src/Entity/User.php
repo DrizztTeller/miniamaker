@@ -74,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
-    #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'client', cascade: ['persist', 'remove'])]
     private ?Subscription $subscription = null;
 
     /**
@@ -353,8 +353,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->subscription;
     }
 
-    public function setSubscription(?Subscription $subscription): static
+    public function setSubscription(Subscription $subscription): static
     {
+        // set the owning side of the relation if necessary
+        if ($subscription->getClient() !== $this) {
+            $subscription->setClient($this);
+        }
+
         $this->subscription = $subscription;
 
         return $this;

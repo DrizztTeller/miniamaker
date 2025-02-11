@@ -38,14 +38,15 @@ class Subscription
     #[ORM\OneToMany(targetEntity: Promo::class, mappedBy: 'subscription')]
     private Collection $promos;
 
-    #[ORM\OneToOne(mappedBy: 'subscription', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'subscription', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $client = null;
 
     public function __construct()
     {
         $this->promos = new ArrayCollection();
         $this->is_active = false;
-        $this->amount = 99.97;
+        $this->amount = 99;
         $this->frequency = 'monthly';
     }
 
@@ -162,18 +163,8 @@ class Subscription
         return $this->client;
     }
 
-    public function setClient(?User $client): static
+    public function setClient(User $client): static
     {
-        // unset the owning side of the relation if necessary
-        if ($client === null && $this->client !== null) {
-            $this->client->setSubscription(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($client !== null && $client->getSubscription() !== $this) {
-            $client->setSubscription($this);
-        }
-
         $this->client = $client;
 
         return $this;
