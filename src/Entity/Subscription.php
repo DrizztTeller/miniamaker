@@ -17,12 +17,6 @@ class Subscription
     #[ORM\Column]
     private ?int $id = null;
 
-     /**
-     * @var Collection<int, User>
-     */
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'subscription')]
-    private Collection $clients;
-
     #[ORM\Column]
     private ?bool $is_active = null;
 
@@ -44,13 +38,15 @@ class Subscription
     #[ORM\OneToMany(targetEntity: Promo::class, mappedBy: 'subscription')]
     private Collection $promos;
 
+    #[ORM\OneToOne(mappedBy: 'subscription', cascade: ['persist', 'remove'])]
+    private ?User $client = null;
+
     public function __construct()
     {
         $this->promos = new ArrayCollection();
         $this->is_active = false;
         $this->amount = 99.97;
         $this->frequency = 'monthly';
-        $this->clients = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -69,36 +65,6 @@ class Subscription
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-        /**
-     * @return Collection<int, User>
-     */
-    public function getClients(): Collection
-    {
-        return $this->clients;
-    }
-
-    public function addClient(User $user): static
-    {
-        if (!$this->clients->contains($user)) {
-            $this->clients->add($user);
-            $user->setSubscription($this);
-        }
-
-        return $this;
-    }
-
-    public function removeClient(User $user): static
-    {
-        if ($this->clients->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getSubscription() === $this) {
-                $user->setSubscription(null);
-            }
-        }
-
-        return $this;
     }
 
     public function isActive(): ?bool
@@ -187,6 +153,28 @@ class Subscription
                 $promo->setSubscription(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getClient(): ?User
+    {
+        return $this->client;
+    }
+
+    public function setClient(?User $client): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($client === null && $this->client !== null) {
+            $this->client->setSubscription(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($client !== null && $client->getSubscription() !== $this) {
+            $client->setSubscription($this);
+        }
+
+        $this->client = $client;
 
         return $this;
     }
