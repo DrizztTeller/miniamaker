@@ -70,9 +70,7 @@
                                     <p class="mb-3">
                                         {{ app.user.subscription.name ?? 'Aucune landing pages actuellement' }}
                                     </p>
-                                    {% if app.user.subscription is null %}
-                                        <a href="#" class="btn btn-primary">Créer une page</a>
-                                    {% endif %}
+                                    <a href={{ path('lp_add') }} class="btn btn-primary">Créer une page</a>
                                 </div>
                             </div>
                         </div>
