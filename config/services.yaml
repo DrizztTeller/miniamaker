@@ -9,6 +9,8 @@ parameters:
     ELEVENLABS: '%env(ELEVENLABS)%'
     STRIPE_SK: '%env(STRIPE_SK)%'
     STRIPE_PK: '%env(STRIPE_PK)%'
+    STRIPE_SUB_YEARLY: '%env(STRIPE_SUB_YEARLY)%'
+    STRIPE_SUB_MONTHLY: '%env(STRIPE_SUB_MONTHLY)%'
     upload_users_images: '%kernel.project_dir%/public/medias/images/users'
 
 services:
