@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if messages is not empty %}
+        {{ messages[0].discussion.subject }}
+    {% else %}
+        Discussion
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">{{messages[0].discussion.subject}}</h5>
+        </div>
+        <div class="card-body chat-box overflow-auto" style="max-height: 400px;">
+            {% for message in messages %}
+                {% if message.status != false %} {# Ne pas afficher les messages supprimés #}
+                    <div class="d-flex {% if message.author.id == app.user.id %}justify-content-end{% else %}justify-content-start{% endif %} mb-2">
+                        <div class="message {% if message.author.id == app.user.id %}bg-success text-white{% else %}bg-light{% endif %} p-2 rounded position-relative">
+                            <p class="mt-4 mb-1">{{ message.content }}</p>
+                            <small class="d-block text-muted">{{ message.createdAt|time_diff }}</small>
+                        
+                            {% if message.author.id == app.user.id %}
+                                <form method="post" action="{{ path('app_message_delete', { 'id': message.id }) }}" onsubmit="return confirm('Supprimer ce message ?');"
+                                      class="position-absolute top-0 end-0 mt-1 me-1">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger p-0 px-2">X</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                        
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {# Formulaire d'envoi de message #}
+        <div class="card-footer">
+            <form method="post" action="{{ path('app_message_new') }}" class="d-flex">
+                <textarea name="content" class="form-control me-2" placeholder="Écrire un message..." required></textarea>
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
