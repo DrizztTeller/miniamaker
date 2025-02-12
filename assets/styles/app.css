@@ -13,10 +13,14 @@ body {
     font-family: "Inter Tight", sans-serif;
     letter-spacing: 0.02rem;
     line-height: 1.5;
-    background-color: #f8f9fa;
-    background-image: url("/medias/images/bg.svg");
-    background-size: cover;
+    background: #f8fafc;
 }
+
+.green-200 { color: #75c95c; }
+.grey-200 { color: #dbdada; }
+
+.bg-green-200 { background-color: #75c95c; }
+.bg-grey-200 { background-color: #dbdada; }
 
 /* Layout */
 .container-xs { max-width: 400px; }
@@ -29,6 +33,8 @@ body {
     display: grid;
     place-items: center;
 }
+
+.mx-end { align-self: flex-end; }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
@@ -51,6 +57,15 @@ h1, h2, h3, h4, h5, h6 {
 /* Components */
 .card {
     border: 0;
+}
+
+.bubble {
+    border-radius: 1rem;
+    padding: 1rem 2rem;
+    margin-bottom: .25rem;
+    border-radius: 0.5rem;
+    max-width: 50%;
+    width: fit-content;
 }
 
 .add {
