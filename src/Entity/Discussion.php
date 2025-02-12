@@ -30,7 +30,7 @@ class Discussion
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column]
-    private ?bool $is_archived = null;
+    private bool $is_archived = false;
 
     /**
      * @var Collection<int, Message>
