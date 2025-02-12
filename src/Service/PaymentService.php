@@ -25,14 +25,23 @@ class PaymentService
     {
         Stripe::setApiKey($this->params->get('STRIPE_SK'));
 
-        $subscription = new Subscription();
-        $subscription
-            ->setClient($user)
-            ->setAmount($amount)
-            ->setFrequency($amount > 99 ? 'year' : 'month')
-        ;
-
+        
         try {
+            $subscription = $user->getSubscription();
+            
+            if ($user->getSubscription() === null) {
+                $subscription = new Subscription();
+                $subscription->setClient($user);
+            }
+    
+            $subscription
+                ->setAmount($amount)
+                ->setFrequency($amount > 99 ? 'year' : 'month')
+            ;
+
+            $this->em->persist($subscription);
+            $this->em->flush();
+
             $checkout_session = Session::create([
                 'payment_method_types' => ['card'], // Setup du moyen de paiement
                 'line_items' => [[
@@ -43,7 +52,7 @@ class PaymentService
                             'interval' => $subscription->getFrequency(), // mois ou année
                         ],
                         'product_data' => [ // Informations du produit
-                            'name' => 'Abonnement miniamaker', // Texte affiché sur la page de paiement
+                            'name' => 'miniamaker', // Texte affiché sur la page de paiement
                         ],
                     ],
                     'quantity' => 1, // Qt obligatoire
@@ -53,11 +62,14 @@ class PaymentService
                 'success_url' => $this->params->get('APP_URL') . '/subscription/success?session_id={CHECKOUT_SESSION_ID}',
                 'cancel_url' => $this->params->get('APP_URL') . '/subscription/cancel',
             ]);
-            return $checkout_session->url ?? 'TEST'; // Le service retourne une URL au controleur
+
+            if (!isset($checkout_session->url)) {
+                throw new \Exception('Erreur lors de la création de la session de paiement');
+            }
+
+            return $checkout_session->url; // Le service retourne une URL au controleur
         } catch (\Throwable $th) {
-            echo $th->getMessage() . PHP_EOL;
-            echo json_encode(['error' => $th->getMessage()]);
-            // return $checkout_session->cancel_url ?? 'CANCEL';
+            throw new \RuntimeException('Erreur lors de la création de la session de paiement : ' . $th->getMessage());
         }
     }
 }

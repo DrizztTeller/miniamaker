@@ -8,28 +8,36 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 #[IsGranted('ROLE_USER')]
 final class SubscriptionController extends AbstractController {
 
     #[Route('/subscription', name: 'app_subscription', methods: ['POST'])]
-    public function subscription(Request $request, PaymentService $ps): Response
+    public function subscription(Request $request, PaymentService $ps): RedirectResponse
     {
-        $subsUser = $this->getUser()->getSubscription();
-        // dd($request->get('plan'));
-
-        if ($subsUser == null || $subsUser->isActive() === false) {
-            $checkoutUrl = $ps->setPayment(
-                $this->getUser(),
-                intval($request->get('plan'))
-            );
-
-            // dd($checkoutUrl);
-            return $this->redirect($checkoutUrl);
-        } else {
-            $this->addFlash('warning', 'Vous avez déjà abonné(e)');
+        try {
+            $subsUser = $this->getUser()->getSubscription();
+            // dd($request->get('plan'));
+    
+            if ($subsUser == null || $subsUser->isActive() === false) {
+                $checkoutUrl = $ps->setPayment(
+                    $this->getUser(),
+                    intval($request->get('plan'))
+                );
+    
+                // dd($checkoutUrl);
+                $this->redirect($checkoutUrl);
+                return new RedirectResponse(url: $checkoutUrl);
+            } else {
+                $this->addFlash('warning', 'Vous avez déjà abonné(e)');
+                return $this->redirectToRoute('app_profile');
+            }
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Une erreur est survenue lors de la création du paiement');
             return $this->redirectToRoute('app_profile');
         }
+       
     }
     #[Route('/subscription/success', name: 'app_subscription_success', methods: ['GET'])]
     public function subsSucces(): Response
