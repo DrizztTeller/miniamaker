@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Repository\MessageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
+#[HasLifecycleCallbacks]
 class Message
 {
     #[ORM\Id]
@@ -31,6 +33,13 @@ class Message
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue()
+    {
+        $this->created_at = new \DateTimeImmutable();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
