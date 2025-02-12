@@ -14,11 +14,11 @@
         </form>
         <div class="d-flex flex-column gap-2 p-2">
             {% for item in messages %}
-                <div class="bubble {{ item.user == app.user ? 'bg-indigo-200 mx-end' : 'bg-fuschia-200' }}">
+                <div class="bubble {{ item.author == app.user ? 'bg-green-200 mx-end' : 'bg-grey-200' }}">
                     <p class="">{{ item.content }}</p>
                 </div>
-                <p class="help pb-0 mb-0 fst-italic {{ item.user == app.user ? 'text-end' : 'text-start' }}">{{ item.user.username == app.user.username ? 'moi' : item.user.username }}, il y a {{ item.createdAt|time_diff }}
-                <img src="{{ asset('medias/images/' ~ item.user.image ) }}" alt="{{ item.user.username }}" width="20">
+                <p class="help pb-0 mb-0 fst-italic {{ item.author == app.user ? 'text-end' : 'text-start' }}">{{ item.author.username == app.user.username ? 'moi' : item.author.username }}, il y a {{ item.createdAt|time_diff }}
+                <img src="{{ asset('medias/images/users/' ~ item.author.image ) }}" alt="{{ item.author.username }}" width="20" >
                 </p>
             {% endfor %}
         </div>
