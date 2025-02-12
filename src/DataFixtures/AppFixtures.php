@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Discussion;
+use App\Entity\Message;
 use App\Entity\User;
 use App\Entity\Detail;
 use App\Entity\Tag;
@@ -136,14 +138,46 @@ class AppFixtures extends Fixture
         $admin->setEmail('admin@admin.com');
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setPassword($this->passwordHasher->hashPassword($admin, 'admin123'));
-        $admin->setUsername('admin');
-        $admin->setFullname('Admin User');
+        $admin->setUsername('Martine');
+        $admin->setFullname('Admin Martine');
         $admin->setIsMajor(true);
         $admin->setIsTerms(true);
         $admin->setIsGpdr(true);
         $admin->setIsVerified(true);
         
         $manager->persist($admin);
+
+
+        // Créer un admin2
+        $admin2 = new User();
+        $admin2->setEmail('admin2@admin.com');
+        $admin2->setRoles(['ROLE_ADMIN']);
+        $admin2->setPassword($this->passwordHasher->hashPassword($admin2, 'admin123'));
+        $admin2->setUsername('Martin');
+        $admin2->setFullname('Admin Martin');
+        $admin2->setIsMajor(true);
+        $admin2->setIsTerms(true);
+        $admin2->setIsGpdr(true);
+        $admin2->setIsVerified(true);
+        
+        $manager->persist($admin2);
+
+        $discussion = new Discussion();
+        $discussion->setSender($admin)
+                    ->setReceiver($admin2)
+                    ->setSubject($admin->getUsername().' x '.$admin2->getUsername())
+                    ->setCreatedAt(new \DateTimeImmutable());
+        $manager->persist($discussion);
+
+        for ($i=0; $i < 10; $i++) { 
+            $message = new Message();
+            $message->setDiscussion($discussion)
+                    ->setAuthor($i % 2 ===0 ? $admin : $admin2)
+                    ->setContent($faker->sentence(10))
+                    ->setCreatedAt(new \DateTimeImmutable())
+                    ->setStatus(true);
+            $manager->persist($message);
+        }
 
         $manager->flush();
     }
