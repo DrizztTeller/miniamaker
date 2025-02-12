@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\SubscriptionRepository;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PaymentService
 {
@@ -19,6 +20,7 @@ class PaymentService
         private SubscriptionRepository $sr,
         private EntityManagerInterface $em,
         private HttpClientInterface $httpClient,
+        private UrlGeneratorInterface $urlGenerator,
     ) {}
 
     public function setPayment(User $user, int $amount): string
@@ -58,9 +60,15 @@ class PaymentService
                     'quantity' => 1, // Qt obligatoire
                 ]],
                 'mode' => 'subscription', // Mode de paiement
-                // Redireection après le paiement (réussi ou échoué)
-                'success_url' => $this->params->get('APP_URL') . '/subscription/success?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => $this->params->get('APP_URL') . '/subscription/cancel',
+                // Redirection après le paiement (réussi ou échoué)
+                'success_url' => $this->urlGenerator->generate('app_subscription_success', 
+                    ['session_id' => '{CHECKOUT_SESSION_ID}'], 
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
+                'cancel_url' => $this->urlGenerator->generate('app_subscription_cancel', 
+                    [], 
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
             ]);
 
             if (!isset($checkout_session->url)) {
