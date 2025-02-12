@@ -1,47 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    {% if messages is not empty %}
-        {{ messages[0].discussion.subject }}
-    {% else %}
-        Discussion
-    {% endif %}
-{% endblock %}
+{% block title %}Disscusion avec ...{% endblock %}
 
 {% block body %}
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">{{messages[0].discussion.subject}}</h5>
-        </div>
-        <div class="card-body chat-box overflow-auto" style="max-height: 400px;">
-            {% for message in messages %}
-                {% if message.status != false %} {# Ne pas afficher les messages supprimés #}
-                    <div class="d-flex {% if message.author.id == app.user.id %}justify-content-end{% else %}justify-content-start{% endif %} mb-2">
-                        <div class="message {% if message.author.id == app.user.id %}bg-success text-white{% else %}bg-light{% endif %} p-2 rounded position-relative">
-                            <p class="mt-4 mb-1">{{ message.content }}</p>
-                            <small class="d-block text-muted">{{ message.createdAt|time_diff }}</small>
-                        
-                            {% if message.author.id == app.user.id %}
-                                <form method="post" action="{{ path('app_message_delete', { 'id': message.id }) }}" onsubmit="return confirm('Supprimer ce message ?');"
-                                      class="position-absolute top-0 end-0 mt-1 me-1">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger p-0 px-2">X</button>
-                                </form>
-                            {% endif %}
-                        </div>
-                        
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
 
-        {# Formulaire d'envoi de message #}
-        <div class="card-footer">
-            <form method="post" action="{{ path('app_message_new') }}" class="d-flex">
-                <textarea name="content" class="form-control me-2" placeholder="Écrire un message..." required></textarea>
-                <button type="submit" class="btn btn-primary">Envoyer</button>
-            </form>
+<div class="position-relative container-sm center mt-5">
+    <h1 class="text-center mb-5">Liste de vos disscusions</h1>
+    <div class="bg-white rounded-3 shadow-sm p-3">
+        <form action="" method="post" class="d-flex justify-content-betwee mb-3">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token('app_message') }}">
+            <input type="text" name="message" id="message" class="form-control" placeholder="Écrivez ici">
+            <button type="submit" class="btn btn-primary">{{ ux_icon('mdi:send', { class: 'h-1' }) }}</button>
+        </form>
+        <div class="d-flex flex-column gap-2 p-2">
+            {% for item in messages %}
+                <div class="bubble {{ item.user == app.user ? 'bg-indigo-200 mx-end' : 'bg-fuschia-200' }}">
+                    <p class="">{{ item.content }}</p>
+                </div>
+                <p class="help pb-0 mb-0 fst-italic {{ item.user == app.user ? 'text-end' : 'text-start' }}">{{ item.user.username == app.user.username ? 'moi' : item.user.username }}, il y a {{ item.createdAt|time_diff }}
+                <img src="{{ asset('medias/images/' ~ item.user.image ) }}" alt="{{ item.user.username }}" width="20">
+                </p>
+            {% endfor %}
         </div>
     </div>
 </div>
+
+
+
 {% endblock %}
