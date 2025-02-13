@@ -46,7 +46,7 @@ final class UserController extends AbstractController
             $this->addFlash('warning', 'Validez votre email !');
         }
 
-        if ($user->getSubscription !== null) {
+        if ($user->getSubscription() !== null) {
             $subs = $user->getSubscription();
             if (!$subs->isActive()) {
                 $now = new \DateTime();
