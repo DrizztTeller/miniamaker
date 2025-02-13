@@ -22,6 +22,10 @@ body {
 .bg-green-200 { background-color: #75c95c; }
 .bg-grey-200 { background-color: #dbdada; }
 
+.border-success { outline: 2px solid var(--bs-success); }
+.border-warning { outline: 2px solid var(--bs-warning); }
+.border-error { outline: 2px solid var(--bs-danger); }
+
 /* Layout */
 .container-xs { max-width: 400px; }
 .container-sm { max-width: 600px; }
