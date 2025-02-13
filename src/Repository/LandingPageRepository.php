@@ -16,28 +16,40 @@ class LandingPageRepository extends ServiceEntityRepository
         parent::__construct($registry, LandingPage::class);
     }
 
-//    /**
-//     * @return LandingPage[] Returns an array of LandingPage objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return LandingPage[] Returns an array of LandingPage objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('l')
+    //            ->andWhere('l.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('l.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?LandingPage
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?LandingPage
+    //    {
+    //        return $this->createQueryBuilder('l')
+    //            ->andWhere('l.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    public function findByUserRole($role) {
+        return $this->createQueryBuilder('lp')
+            ->innerJoin('lp.detail', 'd') 
+            ->innerJoin('d.pro', 'p')     
+            ->where('p.roles LIKE :val')  
+            ->setParameter('val', '%'.$role.'%') 
+            ->orderBy('lp.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    
 }
