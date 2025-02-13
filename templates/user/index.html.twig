@@ -96,8 +96,17 @@
                             Mes derniers échanges
                         </div>
                         <div class="card-body">
-                            <p class="mb-3">{{ app.user.discussions| length > 0 ? 'LES DERNIERS MESSAGES' : 'AUCUNS MESSAGES' }}</p>
-                            <a href="{{ path('app_message') }}" class="btn btn-primary">Voir mes messages</a>
+                            {% if app.user.discussions| length > 0  %}
+                                <p class="mb-3">LES DERNIERS MESSAGES</p>
+                                {% for discussion in app.user.discussions %}
+                                    <div class="d-grid gap-3 mb-5 ">
+                                        <a href="{{ path('app_message_show', { id: discussion.id }) }}">{{ discussion.subject }}</a>
+                                    </div>
+                                {% endfor %}
+                                <a href="{{ path('app_message') }}" class="btn btn-primary">Voir mes messages</a>
+                            {% else %}
+                                <p>AUCUNS MESSAGES</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
