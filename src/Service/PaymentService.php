@@ -38,7 +38,7 @@ class PaymentService
     
             $subscription
                 ->setAmount($amount)
-                ->setFrequency($amount > 99 ? 'year' : 'month')
+                ->setFrequency($amount > 99 ? 'annuel' : 'mensuel')
             ;
 
             $this->em->persist($subscription);
