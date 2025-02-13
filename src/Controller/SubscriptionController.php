@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Subscription;
 use App\Service\PaymentService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -11,7 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 #[IsGranted('ROLE_USER')]
-final class SubscriptionController extends AbstractController {
+final class SubscriptionController extends AbstractController
+{
 
     #[Route('/subscription', name: 'app_subscription', methods: ['POST'])]
     public function subscription(Request $request, PaymentService $ps): RedirectResponse
@@ -44,18 +47,26 @@ final class SubscriptionController extends AbstractController {
             'link' => $request->get('link'),
         ]);
     }
-    
+
     #[Route('/subscription/success', name: 'app_subscription_success', methods: ['GET'])]
-    public function subsSucces(): Response
+    public function subsSucces(EntityManagerInterface $em): Response
     {
-            $this->addFlash('success', 'Vous êtes désormais abonné');
-            return $this->redirectToRoute('app_profile');
+        $subscription = $this->getUser()->getSubscription();
+        $subscription->setIsActive(true)
+                    ->setUpdatedAtValue();
+        $em->persist($subscription);
+        $em->flush();
+        $this->addFlash('success', 'Vous êtes désormais abonné(e)');
+        return $this->redirectToRoute('app_profile');
     }
 
     #[Route('/subscription/cancel', name: 'app_subscription_cancel', methods: ['GET'])]
-    public function subsCancel(): Response
+    public function subsCancel(EntityManagerInterface $em): Response
     {
-            $this->addFlash('warning', "Vous avez abandonné(e) votre tentative d'abonnement");
-            return $this->redirectToRoute('app_profile');
+        $subscription = $this->getUser()->getSubscription();
+        $em->remove($subscription);
+        $em->flush();
+        $this->addFlash('warning', "Vous avez abandonné(e) votre tentative d'abonnement");
+        return $this->redirectToRoute('app_profile');
     }
 }

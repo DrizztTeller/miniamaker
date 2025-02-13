@@ -46,6 +46,18 @@ final class UserController extends AbstractController
             $this->addFlash('warning', 'Validez votre email !');
         }
 
+        if ($user->getSubscription !== null) {
+            $subs = $user->getSubscription();
+            if (!$subs->isActive()) {
+                $now = new \DateTime();
+                $dateMax = (clone $subs->getCreatedAt())->modify('+20 minutes');
+                if ($now > $dateMax) {
+                    $em->remove($subs);
+                    $em->flush();
+                }
+            }
+        }
+
         return $this->render('user/index.html.twig', [
             'userForm' => $form,
         ]);
