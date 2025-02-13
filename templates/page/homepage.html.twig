@@ -1,8 +1,83 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PageController!{% endblock %}
+{% block title %}Accueil | Miniamaker{% endblock %}
 
 {% block body %}
-    <h1>HOMPAGE</h1>
+    <div class="container">
+        <h1>Bienvenue sur votre page d'accueil, {{ app.user.username }}!</h1>
 
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <h3>Derniers messages reçus</h3>
+                <ul>
+                    {% for discussion in discussions %}
+                        <li><a href={{ path('app_message_show', { id: discussion.id }) }}>{{ discussion.subject }}</a></li>
+                    {% else %}
+                        <li>Aucun nouveau message reçu.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    
+        <div class="row">
+
+     
+        {% if is_granted('ROLE_CLIENT') %}
+            <h3>Landing Pages disponibles</h3>
+            <div class="d-grid grid-template-columns-6">
+                {% if landingPages %}
+                    {% for landingPage in landingPages %}
+                        <div class="col">
+                            <div class="landing-page">
+                                <h4>{{ landingPage.title }}</h4>
+                                <p>{{ landingPage.description }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Aucune prestation trouvée</p>
+                {% endif %}
+            </div>
+
+        {% elseif is_granted('ROLE_PRO') %}
+            <h3>Landing Pages disponibles</h3>
+            <div class="d-grid grid-template-columns-6">
+                {% if landingPagesAgent %}
+                    {% for landingPage in landingPagesAgent %}
+                        {% if landingPage.user.hasRole('ROLE_AGENT') %}
+                            <div class="col">
+                                <div class="landing-page">
+                                    <h4>{{ landingPage.title }}</h4>
+                                    <p>{{ landingPage.description }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p>Aucun Agent trouvé</p>
+                {% endif %}
+            </div>
+
+        {% elseif is_granted('ROLE_AGENT') %}
+            <h3>Landing Pages disponibles</h3>
+            <div class="d-grid grid-template-columns-6">
+                {% if landingPagesPro %}
+                    {% for landingPage in landingPagesPro %}
+                        {% if landingPage.user.hasRole('ROLE_PRO') %}
+                            <div class="col">
+                                <div class="landing-page">
+                                    <h4>{{ landingPage.title }}</h4>
+                                    <p>{{ landingPage.description }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p>Aucune prestation trouvée</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>   
+</div>
 {% endblock %}
+
