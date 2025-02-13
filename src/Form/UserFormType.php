@@ -40,6 +40,8 @@ class UserFormType extends AbstractType
                 'row_attr' => ['class' => 'mb-3'],
                 'label' => 'Saisisez votre mot de passe pour mettre à jour votre profil',
                 'toggle' => true,
+                'visible_icon' => '🐵',
+                'hidden_icon' => '🙈',
                 'label_attr' => ['class' => 'form-label'],
                 'attr' => [
                     'placeholder' => 'Mot de passe',
