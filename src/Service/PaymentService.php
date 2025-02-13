@@ -27,18 +27,18 @@ class PaymentService
     {
         Stripe::setApiKey($this->params->get('STRIPE_SK'));
 
-        
+
         try {
             $subscription = $user->getSubscription();
-            
+
             if ($user->getSubscription() === null) {
                 $subscription = new Subscription();
                 $subscription->setClient($user);
             }
-    
+
             $subscription
                 ->setAmount($amount)
-                ->setFrequency($amount > 99 ? 'annuel' : 'mensuel')
+                ->setFrequency($amount > 99 ? 'year' : 'month')
             ;
 
             $this->em->persist($subscription);
@@ -61,12 +61,12 @@ class PaymentService
                 ]],
                 'mode' => 'subscription', // Mode de paiement
                 // Redirection après le paiement (réussi ou échoué)
-                'success_url' => $this->urlGenerator->generate('app_subscription_success', 
-                    ['session_id' => '{CHECKOUT_SESSION_ID}'], 
+                'success_url' => $this->urlGenerator->generate('app_subscription_success',
+                    ['session_id' => '{CHECKOUT_SESSION_ID}'],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
-                'cancel_url' => $this->urlGenerator->generate('app_subscription_cancel', 
-                    [], 
+                'cancel_url' => $this->urlGenerator->generate('app_subscription_cancel',
+                    [],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
             ]);
@@ -81,3 +81,4 @@ class PaymentService
         }
     }
 }
+                    

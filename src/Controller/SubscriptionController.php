@@ -22,7 +22,8 @@ final class SubscriptionController extends AbstractController
         try {
             $subscription = $this->getUser()->getSubscription();
 
-            if ($subscription == null || $subscription->isActive() === false) {
+            // dd($subscription);
+            if ($subscription == null || !$subscription->isActive()) {
                 $checkoutUrl = $ps->setPayment(
                     $this->getUser(),
                     intval($request->get('plan'))
@@ -34,7 +35,7 @@ final class SubscriptionController extends AbstractController
             $this->addFlash('warning', "Vous êtes déjà abonné(e)");
             return $this->redirectToRoute('app_profile');
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Une erreur est survenue lors de la création du paiement');
+            $this->addFlash('error', 'Une erreur est survenue lors de la redirection vers le paiement');
             return $this->redirectToRoute('app_profile');
         }
     }
