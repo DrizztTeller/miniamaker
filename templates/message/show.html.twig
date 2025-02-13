@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Disscusion avec ...{% endblock %}
+{% block title %}Disscusion avec {{ messages[0].author != app.user ? messages[0].author.username :  messages[1].author.username }}{% endblock %}
 
 {% block body %}
 
