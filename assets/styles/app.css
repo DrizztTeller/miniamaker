@@ -81,6 +81,14 @@ h1, h2, h3, h4, h5, h6 {
     border: 2px dashed #cccccc;
 }
 
+.top-2 {
+    top: 2rem;;
+} 
+.right-2 {
+    right: 2rem;
+    left: unset;
+}
+
 .text-xl { font-size: 3rem; }
 .text-2xl { font-size: 3.5rem; }
 .text-3xl { font-size: 4rem; }
@@ -99,6 +107,7 @@ h1, h2, h3, h4, h5, h6 {
 .w-3 { width: 3rem; }
 .w-4 { width: 4rem; }
 .w-5 { width: 5rem; }
+.w-fit { width: fit-content; }
 
 .p-md { padding: 3rem 0; }
 .p-lg { padding: 6rem 0; }
