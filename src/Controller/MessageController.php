@@ -29,8 +29,28 @@ final class MessageController extends AbstractController
     }
 
     #[Route('/messages/{id}', name: 'app_message_show', methods: ['GET', 'POST'])]
-    public function show($id): Response
+    public function show($id, Request $request,): Response
     {
+
+        if ($request->isMethod('POST')) {
+            // dd($request->get('message'));
+            $mes = new Message();
+            $mes ->setDiscussion($this->dr->find($id))
+                ->setAuthor($this->getUser())
+                ->setContent($request->get('message'))
+                ->setStatus(true);
+
+            $this->em->persist($mes);
+            $this->em->flush();
+
+            if ($request->headers->get('HX-Request')) {
+                return $this->render('message/_message.html.twig', [
+                    'item' => $mes
+                ]);
+            }
+
+        }
+
         return $this->render('message/show.html.twig', [
             'messages' => $this->mr->findByDiscussion($id, ['created_at' => 'DESC']),
         ]);
@@ -50,41 +70,39 @@ final class MessageController extends AbstractController
     }
 
     #[Route('/message/new', name: 'app_message_new', methods: ['POST'])]
-public function new(Request $request, EntityManagerInterface $em): Response
-{
-    $user = $this->getUser();
+    public function new(Request $request, EntityManagerInterface $em): Response
+    {
+        $user = $this->getUser();
 
-    if (!$user) {
-        throw $this->createAccessDeniedException("Vous devez être connecté pour envoyer un message.");
+        if (!$user) {
+            throw $this->createAccessDeniedException("Vous devez être connecté pour envoyer un message.");
+        }
+
+        $content = trim($request->request->get('content'));
+
+        if (empty($content)) {
+            $this->addFlash('warning', 'Le message ne peut pas être vide.');
+            return $this->redirectToRoute('app_message_show', ['id' => $request->query->get('discussion_id')]);
+        }
+
+        // Récupérer la discussion actuelle (assure-toi que le paramètre est bien passé)
+        $discussionId = $request->query->get('discussion_id');
+        $discussion = $em->getRepository(Discussion::class)->find($discussionId);
+
+        if (!$discussion) {
+            throw $this->createNotFoundException("Discussion introuvable.");
+        }
+
+        $message = new Message();
+        $message->setAuthor($user);
+        $message->setContent($content);
+        $message->setCreatedAt(new \DateTimeImmutable());
+        $message->setStatus(true); // Message actif (envoyé)
+        $message->setDiscussion($discussion);
+
+        $em->persist($message);
+        $em->flush();
+
+        return $this->redirectToRoute('app_message_show', ['id' => $discussionId]);
     }
-
-    $content = trim($request->request->get('content'));
-    
-    if (empty($content)) {
-        $this->addFlash('warning', 'Le message ne peut pas être vide.');
-        return $this->redirectToRoute('app_message_show', ['id' => $request->query->get('discussion_id')]);
-    }
-
-    // Récupérer la discussion actuelle (assure-toi que le paramètre est bien passé)
-    $discussionId = $request->query->get('discussion_id');
-    $discussion = $em->getRepository(Discussion::class)->find($discussionId);
-
-    if (!$discussion) {
-        throw $this->createNotFoundException("Discussion introuvable.");
-    }
-
-    $message = new Message();
-    $message->setAuthor($user);
-    $message->setContent($content);
-    $message->setCreatedAt(new \DateTimeImmutable());
-    $message->setStatus(true); // Message actif (envoyé)
-    $message->setDiscussion($discussion);
-
-    $em->persist($message);
-    $em->flush();
-
-    return $this->redirectToRoute('app_message_show', ['id' => $discussionId]);
-}
-
-    
 }

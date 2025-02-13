@@ -87,7 +87,8 @@
                             Mes derniers échanges
                         </div>
                         <div class="card-body">
-                            LES DERNIERS MESSAGES
+                            <p class="mb-3">{{ app.user.discussions| length > 0 ? 'LES DERNIERS MESSAGES' : 'AUCUNS MESSAGES' }}</p>
+                            <a href="{{ path('app_message') }}" class="btn btn-primary">Voir mes messages</a>
                         </div>
                     </div>
                 </div>
