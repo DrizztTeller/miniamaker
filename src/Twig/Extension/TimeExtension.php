@@ -17,28 +17,66 @@ class TimeExtension extends AbstractExtension
         ];
     }
 
+    // public function getTimeDiff(\DateTimeInterface $date): string
+    // {
+    //     $now = new \DateTimeImmutable();
+    //     $diff = $date->diff($now);
+
+    //     if ($diff->y > 0) {
+    //         return $diff->y . ' année' . ($diff->d > 1 ? 's' : '');
+    //     }
+
+    //     if ($diff->m > 0) {
+    //         return $diff->m . ' mois';
+    //     }
+
+    //     if ($diff->d > 0) {
+    //         return $diff->d . ' jour' . ($diff->d > 1 ? 's' : '');
+    //     }
+
+    //     if ($diff->h > 0) {
+    //         return $diff->h . ' heure' . ($diff->h > 1 ? 's' : '');
+    //     }
+
+    //     return $diff->i . ' minute' . ($diff->i > 1 ? 's' : '');
+    // }
+
     public function getTimeDiff(\DateTimeInterface $date): string
     {
         $now = new \DateTimeImmutable();
         $diff = $date->diff($now);
+        
+        $parts = [];
     
         if ($diff->y > 0) {
-            return $diff->y . ' année' . ($diff->d > 1 ? 's' : '');
+            $parts[] = $diff->y . ' année' . ($diff->y > 1 ? 's' : '');
         }
     
         if ($diff->m > 0) {
-            return $diff->m . ' mois';
+            $parts[] = $diff->m . ' mois';
         }
     
         if ($diff->d > 0) {
-            return $diff->d . ' jour' . ($diff->d > 1 ? 's' : '');
+            $parts[] = $diff->d . ' jour' . ($diff->d > 1 ? 's' : '');
         }
     
         if ($diff->h > 0) {
-            return $diff->h . ' heure' . ($diff->h > 1 ? 's' : '');
+            $parts[] = $diff->h . ' heure' . ($diff->h > 1 ? 's' : '');
         }
     
-        return $diff->i . ' minute' . ($diff->i > 1 ? 's' : '');
+        if ($diff->i > 0) {
+            $parts[] = $diff->i . ' minute' . ($diff->i > 1 ? 's' : '');
+        }
+    
+        if (empty($parts)) {
+            return "moins d'une minute";
+        }
+    
+        if (count($parts) > 1) {
+            return implode(', ', array_slice($parts, 0, -1)) . ' et ' . end($parts);
+        }
+    
+        return $parts[0];
     }
+    
 }
-                    
