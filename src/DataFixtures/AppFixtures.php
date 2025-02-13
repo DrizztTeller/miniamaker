@@ -155,7 +155,7 @@ class AppFixtures extends Fixture
         $admin2->setPassword($this->passwordHasher->hashPassword($admin2, 'admin123'));
         $admin2->setUsername('Martin');
         $admin2->setFullname('Admin Martin');
-        $admin->setImage('man_27.jpg');
+        $admin2->setImage('man_27.jpg');
         $admin2->setIsMajor(true);
         $admin2->setIsTerms(true);
         $admin2->setIsGpdr(true);
