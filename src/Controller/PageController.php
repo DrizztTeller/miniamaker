@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\DiscussionRepository;
+use App\Repository\LandingPageRepository;
 use App\Service\LoginHistoryService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 final class PageController extends AbstractController
 {
     #[Route('/', name: 'app_homepage', methods: ['GET'])]
-    public function index(Request $request, LoginHistoryService $lHS): Response
+    public function index(Request $request, LoginHistoryService $lHS, LandingPageRepository $lpR, DiscussionRepository $dR): Response
     {
         if (!$this->getUser()) {
             return $this->render('page/lp.html.twig');
@@ -32,8 +34,19 @@ final class PageController extends AbstractController
                 return $this->render('user/complete.html.twig');
             }
 
+            $dateThreshold = new \DateTime();
+            $dateThreshold->modify('-1 day');
+
+            $discussions = $dR->FindAllRecentDiscussions($this->getUser(), $dateThreshold);
+            $landingPages = $lpR->findAll();
+            $landingPagesPro = $lpR->findByUserRole('ROLE_PRO');
+            $landingPagesAgent = $lpR->findByUserRole('ROLE_AGENT');
+
             return $this->render('page/homepage.html.twig', [
-                'controller_name' => 'PageController',
+                'discussions' => $discussions,
+                'landingPages' => $landingPages,
+                'landingPagesPro' => $landingPagesPro,
+                'landingPagesAgent' => $landingPagesAgent,
             ]);
         }
     }
