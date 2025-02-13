@@ -35,7 +35,6 @@ class RegistrationFormType extends AbstractType
             ->add('plainPassword', RepeatedType::class, [
                 'row_attr' => ['class' => 'mb-3'],
                 'label' => 'Mot de passe',
-                'toggle' => true,
                 'label_attr' => ['class' => 'form-label'],
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe doivent être identiques.',
@@ -48,12 +47,14 @@ class RegistrationFormType extends AbstractType
                 ],
                 'first_options' => [
                     'label' => 'Mot de passe',
+                    'toggle' => true,
                     'label_attr' => ['class' => 'form-label'],
                     'attr' => [
                         'class' => "form-control mb-3",
-                    ]
-                ],
-                'second_options' => [
+                        ]
+                    ],
+                    'second_options' => [
+                    'toggle' => true,
                     'label' => 'Confirmer votre mot de passe',
                     'label_attr' => ['class' => 'form-label'],
                     'attr' => [
@@ -72,7 +73,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('isMinor', CheckboxType::class, [
+            ->add('isMajor', CheckboxType::class, [
                 'row_attr' => ['class'=> "form-check mb-2"],
                 'label_attr' => ['class'=> "form-check-label"],
                 'attr' => ['class'=> "form-check-input"],
