@@ -48,13 +48,21 @@ final class UserController extends AbstractController
 
         if ($user->getSubscription() !== null) {
             $subs = $user->getSubscription();
+            $now = new \DateTime();
+
+            $remove = false;
+
             if (!$subs->isActive()) {
-                $now = new \DateTime();
                 $dateMax = (clone $subs->getCreatedAt())->modify('+20 minutes');
-                if ($now > $dateMax) {
-                    $em->remove($subs);
-                    $em->flush();
-                }
+                $remove = $now > $dateMax;
+            } else {
+                $subsEnd = (clone $subs->getUpdatedAt())->modify('+1 year');
+                $remove = $now > $subsEnd;
+            }
+            
+            if ($remove) {
+                $em->remove($subs);
+                $em->flush();
             }
         }
 
