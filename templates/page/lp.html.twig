@@ -5,7 +5,7 @@
 {% block body %}
     <header class="p-xl center">
         <div class="container-md text-center">
-            <div class="">
+            <div>
                 {{ ux_icon('mdi:star', { class: 'text-warning h-2'}) }}
                 {{ ux_icon('mdi:star', { class: 'text-warning h-2'}) }}
                 {{ ux_icon('mdi:star', { class: 'text-warning h-2'}) }}
@@ -16,14 +16,47 @@
             <h1 class="text-3xl">
                 Mettez vos efforts dans votre contenu, les pros s'occupent du reste.
             </h1>
-            <a href="{{ path('app_login') }}" class="btn btn-primary">
+            <a href="{{ path('app_login') }}" class="btn btn-primary mt-3">
                 Créer un compte gratuitement
             </a>
         </div>
     </header>
 
-    <section class="bg-white py-5">
+    <section class="bg-white py-5 text-center">
         {% include 'components/boxes.html.twig' %}
     </section>
 
+    <section class="container-md py-5 text-center">
+        <h2 class="text-xl">Pourquoi choisir Miniamaker ?</h2>
+        <p class="lead">Miniamaker met en relation les créateurs de contenu avec des professionnels du montage vidéo et des agents d'influenceurs pour simplifier la production de contenu de qualité.</p>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <h3 class="text-l">🎥 Monteurs vidéo</h3>
+                    <p>Travaillez avec des monteurs experts pour donner vie à vos vidéos.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <h3 class="text-l">🤝 Agents d'influenceurs</h3>
+                    <p>Trouvez des opportunités de collaboration et développez votre audience.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <h3 class="text-l">🚀 Créateurs de contenu</h3>
+                    <p>Gagnez du temps et concentrez-vous sur ce qui compte : votre créativité.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-white py-5 text-center">
+        <h2 class="text-2xl">Ils nous font confiance</h2>
+        {% include 'components/avis.html.twig' %}
+    </section>
+
+    <footer class="py-4 text-center">
+        <p>&copy; 2025 Miniamaker - Tous droits réservés</p>
+    </footer>
 {% endblock %}
