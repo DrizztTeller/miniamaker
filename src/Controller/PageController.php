@@ -12,18 +12,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class PageController extends AbstractController
 {
+
+    public function __construct(private LandingPageRepository $lpR, private DiscussionRepository $dR)
+    {
+    }
+
     #[Route('/', name: 'app_homepage', methods: ['GET'])]
-    public function index(Request $request, LoginHistoryService $lHS, LandingPageRepository $lpR, DiscussionRepository $dR): Response
+    public function index(Request $request, LoginHistoryService $lHS): Response
     {
         if (!$this->getUser()) {
             return $this->render('page/lp.html.twig');
         } else {
             $requestArray = [
                 "fromLogin" => $this->getParameter('APP_URL') . $this->generateUrl('app_login'),
-                "referer" => $request->headers->get('referer'),
+                "referer" => $request->headers->get('referer'), // permet de savoir d'où on vient
                 "user-agent" => $request->headers->get('user-agent'),
                 "ip" => $request->getClientIp(),
-
             ];
 
             if ($requestArray['referer'] === $requestArray['fromLogin']) {
@@ -37,10 +41,10 @@ final class PageController extends AbstractController
             $dateThreshold = new \DateTime();
             $dateThreshold->modify('-1 day');
 
-            $discussions = $dR->FindAllRecentDiscussions($this->getUser(), $dateThreshold);
-            $landingPages = $lpR->findAll();
-            $landingPagesPro = $lpR->findByUserRole('ROLE_PRO');
-            $landingPagesAgent = $lpR->findByUserRole('ROLE_AGENT');
+            $discussions = $this->dR->FindAllRecentDiscussions($this->getUser(), $dateThreshold);
+            $landingPages = $this->lpR->findAll();
+            $landingPagesPro = $this->lpR->findByUserRole('ROLE_PRO');
+            $landingPagesAgent = $this->lpR->findByUserRole('ROLE_AGENT');
 
             return $this->render('page/homepage.html.twig', [
                 'discussions' => $discussions,
