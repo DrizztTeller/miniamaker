@@ -15,21 +15,24 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 #[IsGranted('ROLE_USER')]
 final class SubscriptionController extends AbstractController
 {
+    private Subscription $subscription;
+    public function __construct(private EntityManagerInterface $em)
+    {
+        $this->subscription = $this->getUser()->getSubscription();
+    }
 
     #[Route('/subscription', name: 'app_subscription', methods: ['POST'])]
     public function subscription(Request $request, PaymentService $ps): RedirectResponse
     {
         try {
-            $subscription = $this->getUser()->getSubscription();
 
             // dd($subscription);
-            if ($subscription == null || !$subscription->isActive()) {
+            if ($this->subscription == null || !$this->subscription->isActive()) {
                 $checkoutUrl = $ps->setPayment(
                     $this->getUser(),
                     intval($request->get('plan'))
                 );
                 return $this->redirectToRoute('app_subscription_check', ['link' => $checkoutUrl]);
-                // return new RedirectResponse($checkoutUrl);
             }
 
             $this->addFlash('warning', "Vous êtes déjà abonné(e)");
@@ -40,7 +43,7 @@ final class SubscriptionController extends AbstractController
         }
     }
 
-    #[Route('/subscription/check', name: 'app_subscription_check')]
+    #[Route('/subscription/check', name: 'app_subscription_check', methods: ['GET'])]
     public function check(Request $request): Response
     {
         // Logique de traitement du succès
@@ -50,23 +53,21 @@ final class SubscriptionController extends AbstractController
     }
 
     #[Route('/subscription/success', name: 'app_subscription_success', methods: ['GET'])]
-    public function subsSucces(EntityManagerInterface $em): Response
+    public function subsSucces(): Response
     {
-        $subscription = $this->getUser()->getSubscription();
-        $subscription->setIsActive(true)
+        $this->subscription->setIsActive(true)
                     ->setUpdatedAtValue();
-        $em->persist($subscription);
-        $em->flush();
+        $this->em->persist($this->subscription);
+        $this->em->flush();
         $this->addFlash('success', 'Vous êtes désormais abonné(e)');
         return $this->redirectToRoute('app_profile');
     }
 
     #[Route('/subscription/cancel', name: 'app_subscription_cancel', methods: ['GET'])]
-    public function subsCancel(EntityManagerInterface $em): Response
+    public function subsCancel(): Response
     {
-        $subscription = $this->getUser()->getSubscription();
-        $em->remove($subscription);
-        $em->flush();
+        $this->em->remove($this->subscription);
+        $this->em->flush();
         $this->addFlash('warning', "Vous avez abandonné(e) votre tentative d'abonnement");
         return $this->redirectToRoute('app_profile');
     }
