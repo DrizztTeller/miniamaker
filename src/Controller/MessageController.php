@@ -70,7 +70,7 @@ final class MessageController extends AbstractController
     }
 
     #[Route('/message/new', name: 'app_message_new', methods: ['POST'])]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request): Response
     {
         $user = $this->getUser();
 
@@ -87,7 +87,7 @@ final class MessageController extends AbstractController
 
         // Récupérer la discussion actuelle (assure-toi que le paramètre est bien passé)
         $discussionId = $request->query->get('discussion_id');
-        $discussion = $em->getRepository(Discussion::class)->find($discussionId);
+        $discussion = $this->em->getRepository(Discussion::class)->find($discussionId);
 
         if (!$discussion) {
             throw $this->createNotFoundException("Discussion introuvable.");
@@ -100,8 +100,8 @@ final class MessageController extends AbstractController
         $message->setStatus(true); // Message actif (envoyé)
         $message->setDiscussion($discussion);
 
-        $em->persist($message);
-        $em->flush();
+        $this->em->persist($message);
+        $this->em->flush();
 
         return $this->redirectToRoute('app_message_show', ['id' => $discussionId]);
     }
