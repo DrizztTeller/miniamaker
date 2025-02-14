@@ -58,7 +58,11 @@ final class UserController extends AbstractController
                 $dateMax = (clone $subs->getCreatedAt())->modify('+20 minutes');
                 $remove = $now > $dateMax;
             } else {
-                $subsEnd = (clone $subs->getUpdatedAt())->modify('+1 year');
+                if ($subs->getFrequency() === 'year') {
+                    $subsEnd = (clone $subs->getUpdatedAt())->modify('+1 year');
+                } else {
+                    $subsEnd = (clone $subs->getUpdatedAt())->modify('+1 month');
+                }
                 $remove = $now > $subsEnd;
             }
 
