@@ -1,0 +1,7 @@
+<div class="bubble {{ item.author == app.user ? 'bg-green-200 mx-end' : 'bg-grey-200' }}">
+	<p class="">{{ item.content }}</p>
+</div>
+<p class="help pb-0 mb-0 fst-italic {{ item.author == app.user ? 'text-end' : 'text-start' }}">{{ item.author.username == app.user.username ? 'moi' : item.author.username }}, il y a
+	{{ item.createdAt|time_diff }}
+	<img src="{{ asset('medias/images/users/' ~ item.author.image ) }}" alt="{{ item.author.username }}" width="20">
+</p>

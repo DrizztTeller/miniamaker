@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profil - Réglages {% endblock %}
+
+{% block body %}
+<div class="container pt-5">
+    <twig:Salutation />
+    <div class="row m-0">
+        <header class="col-md-3 text-center m-0">
+            <div class="p-3">
+                <img src={{ app.user.pathImage|imagine_filter('square') }} alt={{ app.user.username }} class="img-fluid rounded-circle" width="120">
+            </div>
+            <div class="card shadow p-3 text-start">
+                <p class="border-bottom pb-3">
+                    {{ ux_icon('mdi:account-circle', { class: 'h-1 me-2 text-secondary' }) }}
+                    {{ app.user.username }} <span class="ms-2 badge text-bg-secondary">{{ app.user.roles[0]|slice(5) }}</span>
+                </p>
+                <p class="border-bottom pb-3">
+                    {{ ux_icon('mdi:card-account-details', { class: 'h-1 me-2 text-secondary' }) }}
+                    {{ app.user.fullname }}
+                </p>
+                <p class="border-bottom pb-3">
+                    {{ ux_icon('mdi:email', { class: 'h-1 me-2 text-secondary' }) }}
+                    {{ app.user.email }}
+                </p>
+                <p class="pb-3">
+                    <a href="#" class="text-dark text-decoration-none">
+                        {{ ux_icon('mdi:pencil', { class: 'h-1 me-2 text-secondary' }) }}
+                        Ma page de profil public
+                    </a>
+                </p>
+                <hr>
+                <p class="help text-center">Compte créé il y a {{ app.user.createdAt|time_diff }}</p>
+            </div>
+        </header>
+        <section class="col-md-9 p-3 text-decoration-none">
+            <div class="row">
+                <div class="card shadow p-3 col-md-4">
+                    {{ form(userForm) }}
+                    <p class="mt-3 help">Dernière modification il y a {{ app.user.updatedAt|time_diff }}</p>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card shadow p-3">
+                                <div class="card-title fs-5 fw-bold">
+                                    {{ ux_icon('mdi:cog', { class: 'h-1 me-2 text-secondary' }) }}
+                                    Mon abonnement
+                                </div>
+                                <div class="card-body">
+                                    {% if app.user.subscription is null or app.user.subscription.isActive == false %}
+                                    <p class="mb-3">
+                                        Aucun abonnement actuellement
+                                    </p>
+                                    {% else %}
+                                    <p class="mb-3">
+                                        Abonnement  {{ app.user.subscription.frequency == 'year' ? 'annuel' : 'mensuel'}} en cours
+                                    </p>
+                                    <p class="mb-3">
+                                        Il vous reste {{ app.user.subscription.updatedAt|date_modify("+1 year")|time_diff }}
+                                    </p>
+                                    {% endif %}
+                                    {% if app.user.subscription is null or app.user.subscription.isActive == false  %}
+                                    <form action="{{ path('app_subscription') }}" method="POST">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token('app_profile') }}">
+                                        <div class="d-flex justify-content-between">
+                                            <select class="btn btn-secondary w-100" name="plan">
+                                                <option value="990">990&euro; /an</option>
+                                                <option value="99">99&euro; /mois</option>
+                                            </select>
+                                            <button class="btn btn-primary" type="submit">S'abonner</button>
+                                        </div>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card shadow p-3">
+                                <div class="card-title fs-5 fw-bold">
+                                    {{ ux_icon('mdi:book', { class: 'h-1 me-2 text-secondary' }) }}
+                                    Mes landing pages
+                                </div>
+                                <div class="card-body">
+                                    <p class="mb-3">
+                                        {{ app.user.detail.landingPages.name ?? 'Aucune landing pages actuellement' }}
+                                    </p>
+                                    <a href="{{ path('lp_add') }}" class="btn btn-primary">Créer une page</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow p-3 mt-4">
+                        <div class="card-title fs-5 fw-bold">
+                            {{ ux_icon('mdi:message-text', { class: 'h-1 me-2 text-secondary' }) }}
+                            Mes derniers échanges
+                        </div>
+                        <div class="card-body">
+                            {% if app.user.discussions| length > 0  %}
+                                <p class="mb-3">LES DERNIERS MESSAGES</p>
+                                {% for discussion in app.user.discussions %}
+                                    <div class="d-grid gap-3 mb-5 ">
+                                        <a href="{{ path('app_message_show', { id: discussion.id }) }}">{{ discussion.subject }}</a>
+                                    </div>
+                                {% endfor %}
+                                <a href="{{ path('app_message') }}" class="btn btn-primary">Voir mes messages</a>
+                            {% else %}
+                                <p>AUCUNS MESSAGES</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

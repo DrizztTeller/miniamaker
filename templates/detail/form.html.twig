@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Configurer votre fiche d'informations {% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="fs-4 text-center mt-5">Remplissez votre fiche d'informations</h1>
+    <div class="text-center mb-3">
+        <a href="{{ path('app_profile') }}" class="btn btn-outlined-primary ">
+            {{ ux_icon('mdi:arrow-left', { class: 'h-1 me-2 text-secondary' }) }}
+            Retour à mon profil
+        </a>
+    </div>
+    <div class="container-sm mx-auto">
+        <div class="card p-3">
+            {{ form_start(detailForm) }}
+                <div class="mb-3">
+                    <label for="" class="form-label help">
+                        {{ ux_icon('mdi:adjust', { class: 'h-1 me-2 text-secondary' }) }}
+                        Quel est votre activité ?
+                    </label>
+                    {{ form_widget(detailForm.role) }}
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label help">
+                        {{ ux_icon('mdi:adjust', { class: 'h-1 me-2 text-secondary' }) }}
+                        Votre numéro SIRET ou SIREN
+                    </label>
+                    {{ form_widget(detailForm.company_number) }}
+                    <a href="" class="help text-decoration-none">
+                        {# {{ ux_icon('mdi:help-circle-outline', { class: 'h-1 me-2 text-secondary' }) }} #}
+                        Cliquez ici pour remplir le formulaire à partir de votre SIRET/SIREN
+                    </a>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label help">
+                        {{ ux_icon('mdi:adjust', { class: 'h-1 me-2 text-secondary' }) }}
+                        Votre dénomination commerciale
+                    </label>
+                    {{ form_widget(detailForm.company_name) }}
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label help">
+                        {{ ux_icon('mdi:adjust', { class: 'h-1 me-2 text-secondary' }) }}
+                        Votre adresse
+                    </label>
+                    {{ form_widget(detailForm.address) }}
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label help">
+                        {{ ux_icon('mdi:adjust', { class: 'h-1 me-2 text-secondary' }) }}
+                        Ville
+                    </label>
+                    {{ form_widget(detailForm.city) }}
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label help">
+                        {{ ux_icon('mdi:adjust', { class: 'h-1 me-2 text-secondary' }) }}
+                        Code postal
+                    </label>
+                    {{ form_widget(detailForm.postal_code) }}
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label help">
+                        {{ ux_icon('mdi:adjust', { class: 'h-1 me-2 text-secondary' }) }}
+                        France
+                    </label>
+                    {{ form_widget(detailForm.country) }}
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label help">
+                        {{ ux_icon('mdi:adjust', { class: 'h-1 me-2 text-secondary' }) }}
+                        Lien vers votre portfolio
+                    </label>
+                    {{ form_widget(detailForm.portfolio_link) }}
+                </div>
+                
+            {{ form_end(detailForm) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
