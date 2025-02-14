@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon abonnement{% endblock %}
+
+{% block body %}
+
+<div class="container center mt-5">
+    <h1 class="text-center">Mon abonnement</h1>
+    <div class="container-xs bg-white rounded-3 shadow-sm p-3">
+        <p class="text-center">
+            Vous allez souscrire à un abonnement qui vous permettra de prendre contact avec les créateur de contenu, les prestataires et les agents de la plateforme. Les outils de gestion de projet et les évènements privés seront également disponibles.
+        </p>
+        <div class="">
+            <p class="text-center">
+                <a href="{{ link }}" class="btn btn-success">
+                    {{ ux_icon('mdi:check-circle-outline', { class: 'h-1' }) }}
+                    Finaliser
+                </a>
+            </p>
+            <p class="text-center help fst-italic">
+                100% sécurisé et géré par <br> {{ ux_icon('logos:stripe', { class: 'h-1' }) }}
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
