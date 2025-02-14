@@ -35,4 +35,7 @@ Schéma de la BDD :
 - composer require stripe/stripe-php
 - composer update
 
+Passer en prod
+
+- composer require 
 
