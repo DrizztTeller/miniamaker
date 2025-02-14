@@ -34,3 +34,5 @@ Schéma de la BDD :
 - composer require liip/imagine-bundle   dire yes
 - composer require stripe/stripe-php
 - composer update
+
+
