@@ -13,8 +13,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UserController extends AbstractController
 {
+    public function __construct(private EntityManagerInterface $em) {}
+
     #[Route('/profile', name: 'app_profile', methods: ['GET', 'POST'])]
-    public function index(Request $request, EntityManagerInterface $em, UploaderService $us, UserPasswordHasherInterface $uphi): Response
+    public function index(Request $request, UploaderService $us, UserPasswordHasherInterface $uphi): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(UserFormType::class, $user);
@@ -30,8 +32,8 @@ final class UserController extends AbstractController
                     );
                 }
 
-                $em->persist($user);
-                $em->flush();
+                $this->em->persist($user);
+                $this->em->flush();
 
                 // Redirection avec flash message
                 $this->addFlash('success', 'Votre profil à été mis à jour');
@@ -59,10 +61,10 @@ final class UserController extends AbstractController
                 $subsEnd = (clone $subs->getUpdatedAt())->modify('+1 year');
                 $remove = $now > $subsEnd;
             }
-            
+
             if ($remove) {
-                $em->remove($subs);
-                $em->flush();
+                $this->em->remove($subs);
+                $this->em->flush();
             }
         }
 
@@ -73,7 +75,7 @@ final class UserController extends AbstractController
 
 
     #[Route('/complete', name: 'app_complete', methods: ['POST'])]
-    public function complete(Request $request, EntityManagerInterface $em): Response
+    public function complete(Request $request): Response
     {
         $username = $request->getPayload()->get('username');
         $fullname = $request->getPayload()->get('fullname');
@@ -83,8 +85,8 @@ final class UserController extends AbstractController
             $user = $this->getUser();
             $user->setUsername($username)
                 ->setFullname($fullname);
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
 
             if (!$user->isVerified()) {
                 $this->addFlash('success', "Il ne vous reste qu'à vérifier votre email pour compléter votre profil");
