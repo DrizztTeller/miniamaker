@@ -34,6 +34,11 @@ Schéma de la BDD :
 - composer require liip/imagine-bundle   dire yes
 - composer require stripe/stripe-php
 - composer update
+- composer require symfony/ux-twig-component
+- sfc make:twig-component
+- sfc make:twig-extension
+- composer require symfony/ux-autocomplete
+- 
 
 Passer en prod
 
