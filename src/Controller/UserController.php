@@ -23,7 +23,7 @@ final class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $pwd = $uphi->isPasswordValid($user, $form->get('password')->getData());;
+            $pwd = $uphi->isPasswordValid($user, $form->get('password')->getData());
             if ($pwd) {
                 $image = $form->get('image')->getData();
                 if ($image != null) {
